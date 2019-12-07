@@ -20,7 +20,7 @@ import static ros.hack.bonuses.consts.BonusConsts.SERVICE_NAME;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class ConsumerServiceImpl<K, V> implements ConsumerService<K, V> {
+public class ConsumerServiceImpl implements ConsumerService {
 
     @Value("${kafka.topic.operation-topic}")
     private String topic;
