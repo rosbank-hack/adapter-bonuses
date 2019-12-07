@@ -39,17 +39,11 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     private Operation addCashback(@NonNull Operation operation) {
         Map<String, com.github.voteva.Service> services = new HashMap<>();
-        Map<String, String> response = operation
-                .getServices()
-                .get(SERVICE_NAME)
-                .getRequest();
+        Map<String, String> response = new HashMap<>();
         response.put("amount", String.valueOf(Math.random()));
 
         com.github.voteva.Service bonusService = com.github.voteva.Service.builder()
-                .request(operation
-                        .getServices()
-                        .get(SERVICE_NAME)
-                        .getRequest())
+                .request(new HashMap<>())
                 .response(response)
                 .build();
         services.put(SERVICE_NAME, bonusService);

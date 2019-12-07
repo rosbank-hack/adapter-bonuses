@@ -42,7 +42,7 @@ dependencies {
     testCompile "org.projectlombok:lombok"
     testAnnotationProcessor "org.projectlombok:lombok"
 
-    compile "com.github.voteva:operation-history-model:1.0.0-SNAPSHOT"
+    compile "com.github.voteva:operation-history-model:1.0.2-SNAPSHOT"
 }
 
 idea {

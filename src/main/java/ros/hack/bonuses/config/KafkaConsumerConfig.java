@@ -1,6 +1,5 @@
 package ros.hack.bonuses.config;
 
-import com.github.voteva.Operation;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +25,7 @@ public class KafkaConsumerConfig {
     @Value(value = "${kafka.groupId}")
     private String groupId;
 
-    private ConsumerFactory<String, Operation> consumerFactory() {
+    private ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -36,8 +35,8 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Operation> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Operation> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setBatchListener(true);
         factory.setMessageConverter(new BatchMessagingMessageConverter(new StringJsonMessageConverter()));
