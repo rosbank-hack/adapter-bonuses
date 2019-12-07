@@ -18,17 +18,3 @@ services:
       KAFKA_CREATE_TOPICS: "payment-bonus:1:1, operations:1:1"
     depends_on:
       - "zookeeper"
-
-  postgres:
-    image: postgres:11
-    container_name: roshack-db
-    environment:
-      POSTGRES_USER: roshack
-      POSTGRES_PASSWORD: roshack
-      POSTGRES_DB: roshack
-    ports:
-      - 5432:5432
-
-  redis:
-    image: redis
-    container_name: redis-cache-container
