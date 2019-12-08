@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.voteva.Operation;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -21,9 +20,12 @@ public class ProducerServiceImpl implements ProducerService {
 
     @Override
     @Transactional
-    @SneakyThrows(JsonProcessingException.class)
     public void send(String topic, Operation operation) {
-        log.debug(operation.toString());
-        kafkaTemplate.send(topic, objectMapper.writeValueAsString(operation));
+        try {
+            log.debug(operation.toString());
+            kafkaTemplate.send(topic, objectMapper.writeValueAsString(operation));
+        } catch (JsonProcessingException e) {
+            log.error("Json processing exception: " + e);
+        }
     }
 }
