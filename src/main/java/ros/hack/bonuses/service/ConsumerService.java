@@ -1,9 +1,7 @@
 package ros.hack.bonuses.service;
 
-import com.github.voteva.Operation;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import java.util.List;
-
-public interface ConsumerService {
-    void consume(List<Operation> operations);
+public interface ConsumerService<K, V> {
+    void consume(ConsumerRecord<K, V> items);
 }
