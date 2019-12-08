@@ -67,6 +67,7 @@ public class ConsumerServiceImpl implements ConsumerService<String, String> {
 
         operation.getServices().
                 put(SERVICE_NAME, bonusService);
+        operation.setPublisher(SERVICE_NAME);
         return operation;
     }
 
