@@ -7,4 +7,5 @@ public class Constants {
     public static final String CASHBACK = "cashback";
     public static final String EXTENDED_STATUS = "extendedStatus";
     public static final String OUT_STATUS = "OUT";
+    public static final String PAYMENT_SERVICE_NAME = "PAYMENTS";
 }

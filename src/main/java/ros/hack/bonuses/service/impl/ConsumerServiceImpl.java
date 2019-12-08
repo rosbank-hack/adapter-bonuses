@@ -46,13 +46,19 @@ public class ConsumerServiceImpl implements ConsumerService<String, String> {
             bonusService = operation.getServices().get(SERVICE_NAME);
         }
 
+        com.github.voteva.Service paymentService = new com.github.voteva.Service();
+        if (operation.getServices() != null
+                && operation.getServices().get(PAYMENT_SERVICE_NAME) != null) {
+            paymentService = operation.getServices().get(PAYMENT_SERVICE_NAME);
+        }
+
         Map<String, String> request = new HashMap<>();
         if (bonusService.getRequest() != null) {
             request = bonusService.getRequest();
         }
-        Map<String, String> response = request;
+        Map<String, String> response = new HashMap<>();
 
-        if (request.get(EXTENDED_STATUS).equals(OUT_STATUS)) {
+        if (paymentService.getResponse().get(EXTENDED_STATUS).equals(OUT_STATUS)) {
             BigDecimal initialAmount = new BigDecimal(request.get(AMOUNT));
             response.put(CASHBACK, getRandomBonus(initialAmount).toString());
         }
