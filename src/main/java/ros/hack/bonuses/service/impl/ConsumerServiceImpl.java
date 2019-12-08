@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static ros.hack.bonuses.consts.Constants.CASHBACK;
 import static ros.hack.bonuses.consts.Constants.SERVICE_NAME;
 
 @Slf4j
@@ -51,7 +52,7 @@ public class ConsumerServiceImpl implements ConsumerService {
         }
         Map<String, String> response = request;
 
-        response.put("cashback", getRandomBonus().toString());
+        response.put(CASHBACK, getRandomBonus().toString());
 
         bonusService.setRequest(request);
         bonusService.setResponse(response);
