@@ -14,6 +14,7 @@ import ros.hack.bonuses.service.ProducerService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static ros.hack.bonuses.consts.Constants.SERVICE_NAME;
 
@@ -27,7 +28,9 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     @Override
     @Transactional
-    @KafkaListener(topics = "${kafka.payment-topic}", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "${kafka.payment-topic}",
+            containerFactory = "kafkaListenerContainerFactory",
+            groupId = "${kafka.group-id}")
     public void consume(@NonNull List<Operation> operations) {
         operations.forEach(operation -> {
             log.info(operation.toString());
@@ -48,12 +51,17 @@ public class ConsumerServiceImpl implements ConsumerService {
         }
         Map<String, String> response = request;
 
-        response.put("cashback", String.valueOf(Math.random()));
+        response.put("cashback", getRandomBonus().toString());
 
         bonusService.setRequest(request);
         bonusService.setResponse(response);
 
         operation.getServices().put(SERVICE_NAME, bonusService);
         return operation;
+    }
+
+    public Integer getRandomBonus() {
+        Random random = new Random();
+        return random.nextInt(151) + 50;
     }
 }
