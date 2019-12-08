@@ -3,6 +3,7 @@ package ros.hack.bonuses.service.impl;
 import com.github.voteva.Operation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -37,6 +38,7 @@ public class ConsumerServiceImpl implements ConsumerService<String, String> {
         producerService.send(kafkaProperties.getOperationTopic(), addCashback(parse(consumerRecord.value())));
     }
 
+    @SneakyThrows(NullPointerException.class)
     private Operation addCashback(@NonNull Operation operation) {
         com.github.voteva.Service bonusService = new com.github.voteva.Service();
         if (operation.getServices() != null
@@ -50,14 +52,15 @@ public class ConsumerServiceImpl implements ConsumerService<String, String> {
         }
         Map<String, String> response = request;
 
-        BigDecimal initialAmount = new BigDecimal(request.get(AMOUNT));
-
-        response.put(CASHBACK, getRandomBonus(initialAmount).toString());
-
+        if (request.get(EXTENDED_STATUS).equals(OUT_STATUS)) {
+            BigDecimal initialAmount = new BigDecimal(request.get(AMOUNT));
+            response.put(CASHBACK, getRandomBonus(initialAmount).toString());
+        }
         bonusService.setRequest(request);
         bonusService.setResponse(response);
 
-        operation.getServices().put(SERVICE_NAME, bonusService);
+        operation.getServices().
+                put(SERVICE_NAME, bonusService);
         return operation;
     }
 
