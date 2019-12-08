@@ -11,13 +11,12 @@ import ros.hack.bonuses.config.KafkaProperties;
 import ros.hack.bonuses.service.ConsumerService;
 import ros.hack.bonuses.service.ProducerService;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import static ros.hack.bonuses.consts.Constants.CASHBACK;
-import static ros.hack.bonuses.consts.Constants.SERVICE_NAME;
+import static ros.hack.bonuses.consts.Constants.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -52,7 +51,9 @@ public class ConsumerServiceImpl implements ConsumerService {
         }
         Map<String, String> response = request;
 
-        response.put(CASHBACK, getRandomBonus().toString());
+        BigDecimal initialAmount = new BigDecimal(request.get(AMOUNT));
+
+        response.put(CASHBACK, getRandomBonus(initialAmount).toString());
 
         bonusService.setRequest(request);
         bonusService.setResponse(response);
@@ -61,8 +62,7 @@ public class ConsumerServiceImpl implements ConsumerService {
         return operation;
     }
 
-    public Integer getRandomBonus() {
-        Random random = new Random();
-        return random.nextInt(151) + 50;
+    public BigDecimal getRandomBonus(BigDecimal initialAmount) {
+        return initialAmount.remainder(new BigDecimal(10)).add(new BigDecimal("7"));
     }
 }
